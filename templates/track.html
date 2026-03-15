@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block button %}
+  <a class="px-6 py-2 bg-primary/10 text-primary dark:bg-primary/20 dark:text-primary rounded-full font-semibold hover:bg-primary/20 dark:hover:bg-primary/30 transition-colors duration-200" href="/">Logout</a>
+{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto bg-white dark:bg-[#063b20] p-8 rounded-xl shadow-lg text-center mt-10">
+  <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">
+    Application Tracking
+  </h2>
+
+  <!-- Form to Enter Application ID -->
+  <form method="POST" action="{{ url_for('track_application_form') }}" class="mb-8">
+    <label for="app_id" class="block text-lg text-gray-800 dark:text-gray-200 mb-2">
+      Enter Your Application ID:
+    </label>
+    <input type="text" name="app_id" id="app_id" 
+           class="w-full border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:ring-2 focus:ring-primary focus:outline-none"
+           placeholder="e.g., APP-1234" required>
+    <button type="submit"
+            class="mt-4 bg-primary text-white px-6 py-2 rounded-lg hover:bg-primary/90 transition">
+      Track Status
+    </button>
+  </form>
+
+  {% if application %}
+  <!-- Show Result After Submission -->
+  <div>
+    <p class="text-lg text-gray-800 dark:text-gray-300 mb-6">
+      Application ID: <span class="font-semibold">{{ application.app_id }}</span>
+    </p>
+
+    <div class="flex justify-center">
+      {% if application %}
+        {% if application.status == "Rejected" %}
+
+        <div class="p-4 bg-red-100 border-l-4 border-red-600 rounded mt-4">
+            <h3 class="text-red-700 font-bold text-lg">Application Rejected</h3>
+            <p class="mt-2"><strong>Reason:</strong> {{ application.reject_reason }}</p>
+        </div>
+        {% elif application.status == 'Completed' %}
+          <div class="p-4 bg-green-100 border-l-4 border-green-500 rounded mt-4">
+            <h3 class="text-green-700 font-bold">Status: Completed</h3>
+        </div>
+        {% else %}
+        <div class="p-4 bg-blue-100 border-l-4 border-blue-600 rounded mt-4">
+            <h3 class="text-blue-700 font-bold">Status: {{ application.status }}</h3>
+        </div>
+        {% endif %}
+      {% endif %}
+{% if application and application.status == 'Rejected' %}
+    <div class="mt-4 text-center">
+        <a href="{{ url_for('update_documents', app_id=application.app_id) }}"
+           class="px-6 py-2 bg-red-600 text-white rounded-lg shadow hover:bg-red-700 transition">
+            Update Documents
+        </a>
+    </div>
+{% endif %}
+
+    </div>
+  </div>
+  {% elif searched %}
+  <!-- If no record found -->
+  <p class="text-red-500 font-semibold mt-6">No application found with that ID.</p>
+  {% endif %}
+
+  <div class="mt-8">
+    <a href="/my_applications" class="bg-primary text-white px-6 py-3 rounded-lg hover:bg-primary/90 transition">
+      ← My Applications
+    </a>
+  </div>
+</div>
+{% endblock %}

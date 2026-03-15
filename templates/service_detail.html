@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block button %}
+  <a class="px-6 py-2 bg-primary/10 text-primary dark:bg-primary/20 dark:text-primary rounded-full font-semibold hover:bg-primary/20 dark:hover:bg-primary/30 transition-colors duration-200" href="/">Logout</a>
+{% endblock %}
+
+{% block content %}
+  <div class="w-full max-w-3xl bg-white dark:bg-[#063b20] rounded-2xl shadow-lg p-8 space-y-8">
+    
+    <!-- Service Header -->
+    <div class="text-center border-b border-gray-200 dark:border-gray-700 pb-6">
+      <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white">{{ service.title }}</h2>
+      <p class="text-gray-500 dark:text-gray-300 mt-1">{{ service.category or "Government Service" }}</p>
+    </div>
+
+    <!-- Service Image -->
+    <div class="flex justify-center">
+      <img src="{{ url_for('static', filename='images/' + service.image) }}"
+           alt="{{ service.title }}"
+           class="rounded-xl w-full max-w-sm object-cover shadow-sm border border-gray-200 dark:border-gray-700">
+    </div>
+
+    <!-- Price and Highlights -->
+    <div class="text-center">
+      <div class="mt-4 mb-3">
+        <span class="text-2xl font-bold text-green-600">₹{{ service.base_price or "N/A" }}</span>
+        {% if service.discount %}
+          <span class="line-through text-gray-400 ms-2">₹{{ service.original_price }}</span>
+          <span class="text-red-500 ms-1">({{ service.discount }}% off)</span>
+        {% endif %}
+      </div>
+      <p class="text-gray-600 dark:text-gray-300">{{ service.short_desc }}</p>
+    </div>
+
+    <!-- Apply Button -->
+    <div class="mt-6 text-center">
+      <a href="{{ url_for('application_form', id=service.service_id) }}"
+         class="inline-block bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-8 rounded-full transition-all duration-200">
+         Apply for this Service
+      </a>
+    </div>
+
+    <!-- Service Highlights -->
+    <div class="mt-8">
+      <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Service Highlights</h4>
+      <ul class="space-y-2 text-gray-700 dark:text-gray-300">
+        <li><i class="bi bi-check-circle-fill text-green-500 me-2"></i> Quick Online Application</li>
+        <li><i class="bi bi-check-circle-fill text-green-500 me-2"></i> Verified Government Processing</li>
+        <li><i class="bi bi-check-circle-fill text-green-500 me-2"></i> Secure Payment via Razorpay</li>
+        <li><i class="bi bi-check-circle-fill text-green-500 me-2"></i> Track Application Status Online</li>
+      </ul>
+    </div>
+
+    <!-- Required Documents -->
+    <div class="mt-8">
+      <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">📄 Required Documents</h4>
+      {% if service.documents %}
+        <div class="bg-gray-50 dark:bg-[#064222] rounded-xl p-4 shadow-inner">
+          <ul class="space-y-2">
+            {% for doc in service.documents %}
+              <li class="flex items-center">
+                <i class="bi bi-file-earmark-text text-primary text-lg me-3"></i> {{ doc }}
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% else %}
+        <div class="bg-blue-50 text-blue-700 px-4 py-3 rounded-lg">
+          No documents required for this service.
+        </div>
+      {% endif %}
+    </div>
+
+    <!-- Additional Info -->
+    <div class="mt-8 text-gray-700 dark:text-gray-300">
+      <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">🧾 Additional Information</h4>
+      <p>
+        Our {{ service.title }} service helps you apply quickly and securely with all required verifications.
+        We ensure every application is processed efficiently under official government guidelines.
+      </p>
+      <p class="mt-2">
+        For queries, please visit our 
+        <a href="{{ url_for('contact') }}" class="text-green-600 hover:text-green-700 font-semibold">Contact Page</a>.
+      </p>
+    </div>
+
+  </div>
+</div>
+{% endblock %}
