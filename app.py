@@ -50,10 +50,10 @@ app.config['MAIL_USERNAME'] = 'hetvi5007@gmail.com'
 app.config['MAIL_PASSWORD'] = 'jyoibgqmyckxewuz'  # Use an App Password, not your real Gmail password
 mail = Mail(app)
 
-# ✅ Flask Twilio Connection
-ACCOUNT_SID = "AC5b329f9457b1a375174144626bd26a1d"
-AUTH_TOKEN = "84606e7abd243d1fda07fb5859e91733"
-TWILIO_PHONE = "+12173946575"  
+ACCOUNT_SID = "YOUR_TWILIO_SID"
+AUTH_TOKEN = "YOUR_TWILIO_TOKEN"
+TWILIO_PHONE = "YOUR_TWILIO_PHONE"
+
 client = Client(ACCOUNT_SID, AUTH_TOKEN)
 
 # ✅ Initialize SQLAlchemy
